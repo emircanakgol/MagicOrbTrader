@@ -49,7 +49,6 @@ namespace Game.Areas
             animationController.Put(IsInteracting);
         }
         
-        //TODO Meshes
         private void UpgradeMeshGroups() {
             switch (upgradeLevel) {
                 case 1:

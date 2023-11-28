@@ -199,14 +199,11 @@ namespace Game
 
         public void GameOver(bool lostToLateOrder) {
             ShopStarted = false;
+            Time.timeScale = 0;
             if(lostToLateOrder)
                 UIController.Instance.GameOver("You have lost the game due to a late order.");
             else
                 UIController.Instance.GameOver("You have lost the game due to queue being full.");
-        }
-
-        public void RestartScene() {
-            SceneManager.LoadScene("Game");
         }
         
         public static int RandomIntWithWeight(Dictionary<int, int> outputsWithWeight) {
