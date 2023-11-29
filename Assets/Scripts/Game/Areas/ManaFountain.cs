@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Areas
 {

@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Areas;
+using Game.UI;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game
 {
@@ -27,8 +25,9 @@ namespace Game
         [SerializeField] private TextMeshProUGUI infoTMP;
         [SerializeField] private RectTransform levelValue;
         [SerializeField] private TextMeshProUGUI levelTMP;
-        [FormerlySerializedAs("gameOverGO")] [FormerlySerializedAs("gameOverBar")] [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private TextMeshProUGUI gameOverTMP;
+        [SerializeField] private StartButton startButton;
 
         [Header("Bottom Panel")]
         public GameObject manaBar;
@@ -114,12 +113,7 @@ namespace Game
             _oldMaxMana = house.MaxMana;
             _oldGold = player.Golds;
         }
-
-        private void Update() {
-            if(!gameController.ShopStarted && Input.GetKeyDown(KeyCode.Space))
-                gameController.StartShop();
-        }
-
+        
         private void UpdateManaBar() {
             var mana = house.Mana;
             var maxMana = house.MaxMana;
@@ -265,11 +259,13 @@ namespace Game
 
         private void OnShopStart() {
             infoTMP.gameObject.SetActive(false);
+            startButton.gameObject.SetActive(false);
         }
 
         private void OnShopStop(string reason) {
             infoTMP.gameObject.SetActive(true);
             infoTMP.text = reason;
+            startButton.gameObject.SetActive(true);
         }
     }
 }

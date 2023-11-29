@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Game.Areas;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Game
@@ -21,16 +20,28 @@ namespace Game
         [SerializeField] private List<Material> customerMaterials;
         
         [Header("References")] 
+        [Header("Customer References")]
         [SerializeField] private Transform spawnPos;
+        public List<Transform> queuePositions;
         [SerializeField] private TextMeshPro pricesTMP;
-        [SerializeField] private TextMeshPro runestoneTMP;
+        
+        [Header("Gameplay References")]
         public Transform finishPos;
         public House house;
         public Runestone runestone;
         public Cauldron cauldron;
         public Smelter smelter;
+        public MaxBubbleUpgrade bubbleUpgrade;
+        [SerializeField] private TextMeshPro runestoneTMP;
         public PlayerController player;
-        public List<Transform> queuePositions;
+        
+        [Header("Tutorial References")]
+        [SerializeField] private GameObject fountainTutorial;
+        [SerializeField] private GameObject houseTutorial;
+        [SerializeField] private GameObject runestoneTutorial1;
+        [SerializeField] private GameObject cauldronTutorial;
+        [SerializeField] private GameObject runestoneTutorial2;
+        [SerializeField] private GameObject smelterTutorial;
         
         [Header("Properties")]
         public int currentAge;
@@ -103,6 +114,12 @@ namespace Game
             ShopStarted = true;
             OnShopStartCallback?.Invoke();
             _newCustomersCoroutine = StartCoroutine(NewCustomerClock());
+            fountainTutorial.SetActive(false);
+            houseTutorial.SetActive(false);
+            runestoneTutorial1.SetActive(false);
+            cauldronTutorial.SetActive(false);
+            runestoneTutorial2.SetActive(false);
+            smelterTutorial.SetActive(false);
         }
         
         public void StopShop(string reason) {
@@ -138,7 +155,7 @@ namespace Game
                     if (player.totalGainedGold >= DifficultyIncreaseGold[1]) {
                         currentAge++;
                         ManaOrbAge();
-                        StopShop("You have unlocked mana orbs. Go to the left side of the island to explore the new production process.\nPress space to open your shop when you're ready.");
+                        StopShop("You have unlocked mana orbs. Go to the left side of the island to explore the new production process.\nPress start button to open your shop when you're ready.");
                         difficulty++;
                         pricesTMP.text = "Liquid Mana: " + house.manaPrice + "g\nMana Orb: " + runestone.bubblePrice + "g";
                     }
@@ -154,7 +171,7 @@ namespace Game
                     if (player.totalGainedGold >= DifficultyIncreaseGold[3]) {
                         currentAge++;
                         GemstoneAge();
-                        StopShop("You have unlocked gemstones. Go to the bottom side of the island to explore the new production process.\nYou can hold x2 more mana orbs at hand.\nPress space to open your shop when you're ready.");
+                        StopShop("You have unlocked gemstones. Go to the bottom side of the island to explore the new production process.\nYou can hold x2 more mana orbs at hand.\nPress start button to open your shop when you're ready.");
                         difficulty++;
                         player.maxBubbleAtHand *= 2;
                         runestone.bubblePrice /= 2;
@@ -165,36 +182,72 @@ namespace Game
         }
 
         private void LiquidManaAge() {
+            // Gameplay
             runestone.gameObject.SetActive(false);
             cauldron.gameObject.SetActive(false);
+            smelter.gameObject.SetActive(false);
+            bubbleUpgrade.gameObject.SetActive(false);
+            
+            // UI
             UIController.Instance.manaBar.SetActive(true);
             UIController.Instance.bubbleBar.SetActive(false);
             UIController.Instance.gemstoneBar.SetActive(false);
-            smelter.gameObject.SetActive(false);
             runestoneTMP.text = "Put Mana Orb";
             runestoneTMP.fontSize = 4;
+            
+            // Tutorial
+            fountainTutorial.SetActive(true);
+            houseTutorial.SetActive(true);
+            runestoneTutorial1.SetActive(false);
+            cauldronTutorial.SetActive(false);
+            runestoneTutorial2.SetActive(false);
+            smelterTutorial.SetActive(false);
         }
 
         private void ManaOrbAge() {
+            // Gameplay
             runestone.gameObject.SetActive(true);
             cauldron.gameObject.SetActive(true);
+            bubbleUpgrade.gameObject.SetActive(true);
+            smelter.gameObject.SetActive(false);
+            
+            // UI
             UIController.Instance.manaBar.SetActive(true);
             UIController.Instance.bubbleBar.SetActive(true);
             UIController.Instance.gemstoneBar.SetActive(false);
-            smelter.gameObject.SetActive(false);
             runestoneTMP.text = "Put Mana Orb";
             runestoneTMP.fontSize = 4;
+            
+            // Tutorial
+            fountainTutorial.SetActive(false);
+            houseTutorial.SetActive(false);
+            runestoneTutorial1.SetActive(true);
+            cauldronTutorial.SetActive(true);
+            runestoneTutorial2.SetActive(false);
+            smelterTutorial.SetActive(false);
         }
 
         private void GemstoneAge() {
+            // Gameplay
             runestone.gameObject.SetActive(true);
             cauldron.gameObject.SetActive(true);
+            bubbleUpgrade.gameObject.SetActive(true);
+            smelter.gameObject.SetActive(true);
+            
+            // UI
             UIController.Instance.manaBar.SetActive(true);
             UIController.Instance.bubbleBar.SetActive(true);
             UIController.Instance.gemstoneBar.SetActive(true);
-            smelter.gameObject.SetActive(true);
             runestoneTMP.text = "Put Mana Orb or\nEnchant Gem with\nGold Ingot + Mana Orb";
             runestoneTMP.fontSize = 3;
+            
+            // Tutorial
+            fountainTutorial.SetActive(false);
+            houseTutorial.SetActive(false);
+            runestoneTutorial1.SetActive(false);
+            cauldronTutorial.SetActive(false);
+            runestoneTutorial2.SetActive(true);
+            smelterTutorial.SetActive(true);
         }
 
         public void GameOver(bool lostToLateOrder) {

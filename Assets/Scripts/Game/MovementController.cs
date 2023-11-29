@@ -8,6 +8,7 @@ namespace Game
     {        
         [Header("References")]
         [SerializeField] private AnimationController animationController;
+        [SerializeField] private FixedJoystick joystick;
         private CharacterController _characterController;
         private PlayerController _playerController;
         
@@ -61,7 +62,9 @@ namespace Game
 
         private void HandleInput() {
             if(animationController.isPutting) return;
-            movementInput = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            
+            movementInput = new Vector3(joystick.Horizontal, 0,joystick.Vertical);
+            
             movementInput = Vector3.ClampMagnitude(movementInput, 1f);
             _rotatedInput = Quaternion.AngleAxis(_cameraTransform.eulerAngles.y, Vector3.up) * movementInput;
             _characterController.Move(Time.deltaTime * movementSpeed * movementSpeedMultiplier * _rotatedInput);

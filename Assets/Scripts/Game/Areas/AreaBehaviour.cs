@@ -26,6 +26,7 @@ namespace Game.Areas
         private Tweener _spriteTweener;
         
         protected abstract SpriteRenderer ProgressSprite { get; set; }
+        
         protected abstract bool CheckProperty { get; }
 
         protected virtual void OnEnable() {

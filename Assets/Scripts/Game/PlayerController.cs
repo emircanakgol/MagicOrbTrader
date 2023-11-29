@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
+using Game.UI;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -25,6 +25,7 @@ namespace Game
         [SerializeField] private GameController gameController;
         [SerializeField] private Transform handTransform;
         [SerializeField] private VisualEffect bubbleVFX;
+        [SerializeField] private InteractButton interactButton;
         
         [Header("Settings")] 
         public bool isInteracting;
@@ -135,16 +136,7 @@ namespace Game
         }
 
         private void Update() {
-            InteractCheck();
-        }
-
-        private void InteractCheck() {
-            if (Input.GetKeyDown(KeyCode.E)) {
-                isInteracting = true;
-            }
-            if (Input.GetKeyUp(KeyCode.E)) {
-                isInteracting = false;
-            }
+            isInteracting = interactButton.isInteracting;
         }
 
         private void RefreshVFX() {

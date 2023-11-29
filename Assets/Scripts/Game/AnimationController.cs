@@ -1,6 +1,4 @@
-using System;
 using DG.Tweening;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Game
