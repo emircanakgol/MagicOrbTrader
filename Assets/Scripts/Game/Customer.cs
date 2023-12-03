@@ -25,8 +25,6 @@ namespace Game
         public event Action OnOrderFailedCallback;
         
         [Header("References")] 
-        [SerializeField] private GameObject moustacheGO;
-        [SerializeField] private GameObject beardGO;
         [SerializeField] private GameObject billboardGO;
         [SerializeField] private Animator animator;
         [SerializeField] private TextMeshPro timeTMP;
@@ -102,23 +100,6 @@ namespace Game
             _gameController = GameController.Instance;;
             _customerQueue = _gameController.Customers;
             OnJoinedQueueCallback?.Invoke();
-            
-            RandomMoustacheBeard();
-        }
-
-        private void RandomMoustacheBeard() {
-            switch (Random.Range(0,4)) {
-                case 0:
-                    moustacheGO.SetActive(false);
-                    beardGO.SetActive(false);
-                    break;
-                case 1:
-                    beardGO.SetActive(false);
-                    break;
-                case 2:
-                    moustacheGO.SetActive(false);
-                    break;
-            }
         }
 
         private static readonly Dictionary<int, int> _manaOrbWeightedRandom 
